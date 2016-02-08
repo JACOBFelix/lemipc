@@ -1,0 +1,17 @@
+#!/bin/sh
+
+n=4
+[[ "$1" == "-h" ]] && echo "./add_bots nbots (default=4)" && exit
+[[ "$1" != "" ]] && n="$1"
+
+check_for_server=$(ps -C "lemipc" | wc -l)
+[[ $check_for_server < 1 ]] && check_for_server=$(ps -C "run_game" | wc -l)
+# echo "$check_for_server occurences found"
+[[ $check_for_server < 1 ]] && echo "No server found ! :'(" && exit 1
+
+while [[ $n > 0 ]]
+do
+    ./lemipc > /dev/null &
+    echo "The client $n is running"
+    let "n=n-1"
+done

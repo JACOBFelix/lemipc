@@ -1,0 +1,27 @@
+#!/bin/sh
+
+n=12
+[[ "$1" == "-h" ]] && echo "./run_game nbots (default=12)" && exit
+[[ "$1" != "" ]] && n="$1"
+
+echo "============="
+echo "Server launch"
+echo "============="
+./lemipc &
+echo "============="
+sleep 0.5
+server_pid=$!
+# server_job_id=$(jobs | head -n 1 | cut -f2)
+
+while [[ $n > 0 ]]
+do
+    ./lemipc &
+    echo "The client $n is running"
+    let "n=n-1"
+done
+
+echo "server_pid    = $server_pid"
+# echo "server_job_id = $server_job_id"
+#fg $server_job_id
+
+wait $server_pid
